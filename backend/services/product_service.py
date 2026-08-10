@@ -4,12 +4,13 @@ from schemas.products import ProductCreate, ProductUpdate, ProductDelete
 from fastapi import HTTPException, status
 from typing import Optional
 
+
 def get_products(
-    db: Session, 
-    category_id: Optional[int] = None, 
-    min_price: Optional[float] = None, 
-    max_price: Optional[float] = None, 
-    in_stock: Optional[bool] = None
+    db: Session,
+    category_id: Optional[int] = None,
+    min_price: Optional[float] = None,
+    max_price: Optional[float] = None,
+    in_stock: Optional[bool] = None,
 ):
     query = db.query(Product)
     if category_id is not None:
@@ -25,16 +26,15 @@ def get_products(
             query = query.filter(Product.stock == 0)
     return query.all()
 
+
 def create(product_data: ProductCreate, db: Session):
-    if db.query(Product).filter(Product.name == product_data.name).first():
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Product already exists")
 
     new_product = Product(
         name=product_data.name,
         description=product_data.description,
         price=product_data.price,
         stock=product_data.stock,
-        category_id=product_data.category_id
+        category_id=product_data.category_id,
     )
     db.add(new_product)
     db.commit()
@@ -47,7 +47,9 @@ def update(product_data: ProductUpdate, db: Session):
     db_product = db.query(Product).filter(Product.id == product_data.id).first()
 
     if db_product is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
+        )
     else:
         db_product.name = product_data.name
         db_product.description = product_data.description
@@ -64,7 +66,9 @@ def delete(product_data: ProductDelete, db: Session):
     db_product = db.query(Product).filter(Product.id == product_data.id).first()
 
     if db_product is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
+        )
     else:
         db.delete(db_product)
         db.commit()
