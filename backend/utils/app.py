@@ -17,7 +17,7 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://backend-final-3ouo.onrender.com"],
+    allow_origins=["https://frontend-gilt-alpha-61.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
