@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -19,7 +21,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/auth/me');
+      const response = await axios.get(`${API_BASE_URL}/auth/me`);
       setUser(response.data);
     } catch (error) {
       console.error("Error fetching user", error);
@@ -29,19 +31,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // ဤနေရာတွင် login function ကို အပြည့်အစုံ ပြန်ထည့်ပေးထားပါသည်
   const login = async (email, password) => {
-    const response = await axios.post('http://localhost:8000/auth/login', {
-      username: email, // Assuming backend uses username field for email or we map it
-      email: email,
-      password: password
+    const response = await axios.post(`${API_BASE_URL}/auth/login`, {
+        username: email, 
+        email: email,
+        password: password
     });
+    // အကယ်၍ backend က token ပြန်ပေးလျှင် အောက်ပါအတိုင်း သိမ်းနိုင်ပါသည်
     const { access_token } = response.data;
     localStorage.setItem('token', access_token);
     setToken(access_token);
   };
 
   const register = async (username, email, password) => {
-    const response = await axios.post('http://localhost:8000/auth/register', {
+    // ဤနေရာတွင် API_BASE_URL ကို အစားထိုးလိုက်ပါသည်
+    const response = await axios.post(`${API_BASE_URL}/auth/register`, {
       username,
       email,
       password
