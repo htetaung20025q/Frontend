@@ -17,7 +17,7 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://backend-final-3ouo.onrender.com"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
