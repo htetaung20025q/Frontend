@@ -129,6 +129,14 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 DATABASE_URI="sqlite:///./sql_app.db"
 ```
 
+The frontend reads its API base URL from `VITE_API_URL`. It defaults to
+`https://backend-final-3ouo.onrender.com`; set the variable in `frontend/.env`
+to use another backend during a build or local development:
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
 ## Notes
 
 - The project is a demo and some legacy/helper files remain, especially around auth and service duplication.

@@ -50,6 +50,14 @@ npm run dev
 
 The frontend is served by Vite and usually runs on port `5173`.
 
+The frontend sends API calls to `https://backend-final-3ouo.onrender.com` by
+default. To point it at a different backend (for example, the local API), add
+`frontend/.env` before starting Vite:
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
 ## Project structure by development concern
 
 ### Backend

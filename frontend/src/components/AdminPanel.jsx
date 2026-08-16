@@ -4,6 +4,8 @@ import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Package, ShoppingCart, LogOut, Edit, Trash2, Plus } from 'lucide-react';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://backend-final-3ouo.onrender.com';
+
 const AdminPanel = () => {
   const { user, logout, loading: authLoading } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -35,7 +37,7 @@ const AdminPanel = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8000/products/');
+      const response = await axios.get(`${API_BASE_URL}/products/`);
       setProducts(response.data);
     } catch (err) {
       setError(err.message);
@@ -47,7 +49,7 @@ const AdminPanel = () => {
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8000/orders/all');
+      const response = await axios.get(`${API_BASE_URL}/orders/all`);
       setOrders(response.data);
     } catch (err) {
       setError(err.message);
@@ -64,9 +66,9 @@ const AdminPanel = () => {
         // Actually wait, let's assume we use /products/update? No, the user wants me to implement it.
         // The backend didn't have an update endpoint, I'll need to check if there is one. 
         // For now, assume there is a PUT /products/{id} or POST /products/update
-        await axios.post('http://localhost:8000/products/update', formData);
+        await axios.post(`${API_BASE_URL}/products/update`, formData);
       } else {
-        await axios.post('http://localhost:8000/products/create', formData);
+        await axios.post(`${API_BASE_URL}/products/create`, formData);
       }
       setShowForm(false);
       fetchProducts();
@@ -78,7 +80,7 @@ const AdminPanel = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
-        await axios.post('http://localhost:8000/products/delete', { id });
+        await axios.post(`${API_BASE_URL}/products/delete`, { id });
         fetchProducts();
       } catch (err) {
         alert("Failed to delete product: " + (err.response?.data?.detail || err.message));
@@ -167,7 +169,7 @@ const AdminPanel = () => {
                         const data = new FormData();
                         data.append("file", file);
                         try {
-                          const res = await axios.post('http://localhost:8000/products/upload-image', data, {
+                          const res = await axios.post(`${API_BASE_URL}/products/upload-image`, data, {
                             headers: { 'Content-Type': 'multipart/form-data' }
                           });
                           setFormData({...formData, image_url: res.data.url});

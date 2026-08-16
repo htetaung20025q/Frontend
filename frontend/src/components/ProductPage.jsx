@@ -4,6 +4,8 @@ import { AuthContext } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingBag, User as UserIcon, LayoutDashboard, LogOut, Package } from 'lucide-react';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://backend-final-3ouo.onrender.com';
+
 const ProductPage = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -17,7 +19,7 @@ const ProductPage = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/products/');
+      const response = await axios.get(`${API_BASE_URL}/products/`);
       setProducts(response.data);
     } catch (err) {
       console.error(err);
@@ -33,7 +35,7 @@ const ProductPage = () => {
     }
     
     try {
-      await axios.post('http://localhost:8000/orders/', {
+      await axios.post(`${API_BASE_URL}/orders/`, {
         items: [{ product_id: productId, quantity: 1 }]
       });
       setMessage("Order placed successfully! We'll ship it soon.");
