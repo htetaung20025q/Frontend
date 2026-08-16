@@ -63,3 +63,20 @@ def logout(token: str = Depends(oauth2_scheme)):
     jwt_ser.blacklist_token(token)
     return {"message": "Successfully logged out"}
 
+@router.get("/seed-admin")
+def seed_admin(db: Session = Depends(get_db)):
+    admin = db.query(User).filter(User.username == "admin").first()
+    if not admin:
+        hashed_password = jwt_ser.hash_password("admin123")
+        new_admin = User(
+            username="admin",
+            email="admin@example.com",
+            hashed_password=hashed_password,
+            is_admin=True
+        )
+        db.add(new_admin)
+        db.commit()
+        return {"message": "Admin user (admin@example.com) successfully seeded! You can now log in."}
+    return {"message": "Admin already exists in this database."}
+
+
