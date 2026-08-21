@@ -71,6 +71,9 @@ const ProductPage = () => {
                   <LayoutDashboard size={18} /> Admin
                 </Link>
               )}
+              <Link to="/guide" className="text-sm font-semibold flex items-center gap-2 text-slate-600 hover:text-indigo-600 transition-colors">
+                Guide
+              </Link>
               <button onClick={logout} className="text-sm font-medium text-slate-400 hover:text-slate-800 transition-colors flex items-center gap-2">
                 <LogOut size={18} />
               </button>
